@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CRM DataTable Erwini</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+    />
+    <link
+            href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.6/datatables.min.css"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="https://cdn.datatables.net/buttons/2.1.1/css/buttons.dataTables.min.css"
+    />
+    <style>
+        .dt-buttons {
+            margin-bottom: 0.5em; /* Add some space below the buttons */
+        }
+        .dt-top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5em; /* Add space below the top container */
+        }
+        .dt-center-in-div {
+            text-align: center; /* Center the buttons if needed */
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <h1 class="text-center mt-3">CRM DataTable Erwini</h1>
+    <div class="row">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <ul class="nav nav-tabs" id="tableTabs">
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link active"
+                                    id="steg-tab"
+                                    href="#"
+                                    onclick="openTable('steg')"
+                                    data-table="steg"
+                            >Steg</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    id="connection-tab"
+                                    href="#"
+                                    onclick="openTable('connection')"
+                                    data-table="connection"
+                            >Connection</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    id="alarme-tab"
+                                    href="#"
+                                    onclick="openTable('alarme')"
+                                    data-table="alarme"
+                            >Alarme</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    id="control-tab"
+                                    href="#"
+                                    onclick="openTable('control')"
+                                    data-table="control"
+                            >Control</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    id="command-tab"
+                                    href="#"
+                                    onclick="openTable('command')"
+                                    data-table="command"
+                            >Command</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    id="command_zone_id-tab"
+                                    href="#"
+                                    onclick="openTable('command_zone_id')"
+                                    data-table="command_zone_id"
+                            >Command Zone ID</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    href="#"
+                                    id="zone-tab"
+                                    onclick="openTable('zone')"
+                                    data-table="zone"
+                            >Zone</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    href="#"
+                                    id="reonaut-tab"
+                                    onclick="openTable('reonaut')"
+                                    data-table="reonaut"
+                            >Reonaut</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    href="#"
+                                    id="device-tab"
+                                    onclick="openTable('device')"
+                                    data-table="device"
+                            >Device</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    href="#"
+                                    id="timePlanning-tab"
+                                    onclick="openTable('timePlanning')"
+                                    data-table="timePlanning"
+                            >Time Planning</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    href="#"
+                                    id="users-tab"
+                                    onclick="openTable('users')"
+                                    data-table="users"
+                            >Users</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a
+                                    class="nav-link"
+                                    href="#"
+                                    id="lecturecapteur-tab"
+                                    onclick="openTable('lecturecapteur')"
+                                    data-table="lecturecapteur"
+                            >Lecture Capteur</a
+                            >
+                        </li>
+                    </ul>
+
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div>
+                            <button class="btn btn-primary" onclick="openAddModal()">Add New</button>
+                        </div>
+                        <div>
+                            <label for="zone_id_filter" class="me-2">Filter Zone ID:</label>
+                            <input type="text" id="zone_id_filter" placeholder="Enter Zone ID" />
+                        </div>
+                    </div>
+
+
+                    <div id="container_table" class="mt-3">
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Add New Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeAddModal()"></button>
+            </div>
+            <div class="modal-body" id="modal-body-add">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeAddModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btn-conf-add">Add Item</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div
+        class="modal fade"
+        id="delet-confirmation-modal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="deleteConfirmationModalLabel"
+        aria-hidden="true"
+>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">
+                    Confirmation de Suppression
+                </h5>
+                <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                        onclick="annul_delet()"
+                ></button>
+            </div>
+            <div class="modal-body" id="modal-body-confirm-delet"></div>
+            <div class="modal-footer">
+                <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        onclick="annul_delet()"
+                >
+                    Close
+                </button>
+                <button
+                        type="button"
+                        class="btn btn-danger"
+                        id="btn-conf-del"
+                >
+                    Confirm Suppression
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div
+        class="modal fade"
+        id="edit-confirmation-modal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="editConfirmationModalLabel"
+        aria-hidden="true"
+>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editConfirmationModalLabel">
+                    Confirmation d'Edition
+                </h5>
+                <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                        onclick="annul_edit()"
+                ></button>
+            </div>
+            <div class="modal-body" id="modal-body-confirm-edit">
+                <p></p>
+                <label for="input-etat">Etat</label>
+                <select
+                        class="form-select"
+                        id="input-etat"
+                        aria-label="Select Etat"
+                >
+                    <option id="input-etat-on" value="on">On</option>
+                    <option id="input-etat-off" value="off">Off</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                        onclick="annul_edit()"
+                >
+                    Close
+                </button>
+                <button
+                        type="button"
+                        class="btn btn-primary"
+                        id="btn-conf-edit"
+                >
+                    Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"
+></script>
+<script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.6/datatables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script
+        type="text/javascript"
+        charset="utf8"
+        src="https://cdn.datatables.net/buttons/2.1.1/js/dataTables.buttons.min.js"
+></script>
+<script
+        type="text/javascript"
+        charset="utf8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"
+></script>
+<script
+        type="text/javascript"
+        charset="utf8"
+        src="https://cdn.datatables.net/buttons/2.1.1/js/buttons.html5.min.js"
+></script>
+
+<script>
+    // --- Global Variables and Initialization ---
+    const BASE_URL = ${MY_BASE_URL};//"https://erwini.herokuapp.com/api/administration"; // Or "http://localhost:3000/api/administration";
+    let dataTableInstance = null; // Variable to hold the DataTable instance
+    let currentTable = ''; // Track currently active table
+    let tableSchema = {}; // Store schemaTables.json data
+    let zoneIdFilterValue = ''; // Store zone ID filter value
+
+    // --- Fetch Table Schema ---
+    $.getJSON("schemaTables.json", function (data) {
+        tableSchema = data;
+    }).fail(function () {
+        console.error("Error loading schemaTables.json");
+    });
+
+    // --- Helper Functions ---
+    // Function to show a loading indicator (can be improved with spinners)
+    function showLoading() {
+        $("#container_table").html("<p class='text-center'>Loading data...</p>");
+    }
+
+    // Function to handle API errors and display user-friendly messages
+    function handleApiError(error, message = 'An error occurred') {
+        console.error("API Error:", error);
+        alert(message + ". Please check the console for details."); // Consider a better UI for error display
+    }
+
+    // --- API Interaction Functions ---
+    // Generic function to fetch items for a given table
+    const getItems = async (table) => {
+        try {
+            const config = {
+                headers: { authorization: localStorage.getItem("token") },
+                zone_id: $("#zone_id_filter").val() // Use the filter input value
+            };
+            const response = await axios.post(`${BASE_URL}/get_${table}/`, config);
+            return response.data;
+        } catch (error) {
+            handleApiError(error, `Failed to fetch data for table: ${table}`);
+            throw error; // Re-throw to stop further processing if needed
+        }
+    };
+
+    // --- Delete Functions ---
+    function annul_delet() {
+        $("#delet-confirmation-modal").modal("hide"); // Use 'hide' for Bootstrap 5
+    }
+
+    const confirm_delet = async (table, id) => {
+        try {
+            const response = await axios.post(`${BASE_URL}/delet_${table}/`, {
+                headers: { authorization: localStorage.getItem("token") },
+                _id: id,
+                token2: localStorage.getItem("token2"),
+            });
+            if (response.data.success) {
+                $("#delet-confirmation-modal").modal("hide");
+                openTable(table); // Refresh the table
+            } else {
+                alert("Delete failed: " + response.data.message);
+            }
+        } catch (error) {
+            handleApiError(error, "Failed to delete item");
+        }
+    };
+
+    const delet = async (table, id) => {
+        $("#delet-confirmation-modal").modal("show"); // Use 'show' for Bootstrap 5
+        $("#btn-conf-del").off('click').on('click', () => confirm_delet(table, id)); // Use .off() to prevent duplicate event handlers
+        $("#modal-body-confirm-delet").text(`êtes-vous sûr de supprimer l'identifiant de l'appareil : ${id}`);
+    };
+
+    // --- Edit Functions ---
+    function annul_edit() {
+        $("#edit-confirmation-modal").modal("hide"); // Use 'hide' for Bootstrap 5
+    }
+
+    const confirm_edit = async (table, id) => {
+        try {
+            const etatValue = $("#input-etat").val();
+            const response = await axios.post(`${BASE_URL}/edit_${table}/`, {
+                headers: { authorization: localStorage.getItem("token") },
+                _id: id,
+                token2: localStorage.getItem("token2"),
+                etat: etatValue,
+            });
+            if (response.data.success) {
+                $("#edit-confirmation-modal").modal("hide");
+                openTable(table); // Refresh the table
+            } else {
+                alert("Edit failed: " + response.data.message);
+            }
+        } catch (error) {
+            handleApiError(error, "Failed to edit item");
+        }
+    };
+
+    function edit(table, id, etat) {
+        $("#edit-confirmation-modal").modal("show"); // Use 'show' for Bootstrap 5
+        $("#btn-conf-edit").off('click').on('click', () => confirm_edit(table, id)); // Use .off() to prevent duplicate event handlers
+        $("#input-etat").val(etat); // Set the current etat value in the edit modal
+        $("#modal-body-confirm-edit p").text(`êtes-vous sûr d'éditer la ligne avec l'id : ${id}`);
+    }
+
+
+    // --- Add New Functions ---
+    function closeAddModal() {
+        $("#add-modal").modal('hide');
+    }
+
+    function openAddModal() {
+        $("#add-modal").modal('show');
+        const modalBody = $("#modal-body-add");
+        modalBody.empty(); // Clear previous form
+
+        const currentTableSchema = tableSchema.find(schema => schema.colunms_tab === currentTable);
+        if (!currentTableSchema) {
+            modalBody.html("<p>No schema found for this table to create form.</p>");
+            return;
+        }
+
+        const form = $('<form id="addItemForm"></form>');
+        currentTableSchema.rows.forEach(fieldName => {
+            if (fieldName !== '_id' && fieldName !== 'action') { // Exclude _id and action
+                const formGroup = $('<div class="mb-3"></div>');
+                const label = $(`<label for="${fieldName}" class="form-label">${fieldName}</label>`);
+                const input = $('<input type="text" class="form-control" id="' + fieldName + '" name="' + fieldName + '">'); // Basic text input, adjust type as needed
+                formGroup.append(label, input);
+                form.append(formGroup);
+            }
+        });
+        modalBody.append(form);
+
+        $("#btn-conf-add").off('click').on('click', () => confirm_add(currentTable)); // Update confirm button click
+    }
+
+
+    const confirm_add = async (table) => {
+        try {
+            const formData = {};
+            $("#addItemForm").serializeArray().forEach(item => {
+                formData[item.name] = item.value;
+            });
+
+            const response = await axios.post(`${BASE_URL}/add_${table}/`, {
+                headers: { authorization: localStorage.getItem("token") },
+                token2: localStorage.getItem("token2"),
+                ...formData // Send form data as payload
+            });
+
+            if (response.data.success) {
+                $("#add-modal").modal('hide');
+                openTable(table); // Refresh table
+            } else {
+                alert("Add failed: " + response.data.message);
+            }
+        } catch (error) {
+            handleApiError(error, "Failed to add new item");
+        }
+    };
+
+
+    // --- Table Display Function ---
+    function openTable(table) {
+        currentTable = table; // Update currentTable
+        showLoading(); // Show loading indicator
+
+        // Set active tab in navbar
+        $("#tableTabs .nav-link").removeClass("active");
+        $(`#${table}-tab`).addClass("active");
+
+        // Load table HTML and then populate data
+        $("#container_table").load(`table.html`, () => {
+            loadTableData(table); // Call function to load data after table.html is loaded
+        });
+    }
+
+
+    const loadTableData = async (table) => {
+        try {
+            const value = await getItems(table);
+            let columnTable = "loading";
+            let columnRows = [];
+            let dataDataTable = [];
+            const columnsDataTable = [];
+            let tableColumnHtml = "";
+            const FROM_PATTERN = "DD/MM/YYYY HH:mm";
+            const TO_PATTERN = "YYYY-MM-DD HH:mm";
+
+            tableSchema.find((o, index) => {
+                o.colunms_tab === table && (columnRows = o.rows);
+            });
+
+            if (table === "command") {
+                value.find((o, index) => {
+                    dataDataTable.push(o.latestDate);
+                });
+            } else {
+                dataDataTable = value;
+            }
+
+
+            columnTable = columnRows.length === 0 ? Object.keys(dataDataTable[0] || {}) : columnRows;
+
+
+            // Prepare data for DataTable - adding action buttons and formatting
+            dataDataTable = dataDataTable.map((v) => ({
+                ...v,
+                action:
+                    `<button class='btn btn-danger btn-sm' onclick="delet('${table}','${v._id}')">Delete</button>
+                         <button class='btn btn-info btn-sm ms-1' onclick="edit('${table}','${v._id}','${v.etat}')">Edit</button>`
+            }));
+
+            if (table === "zone") {
+                dataDataTable = dataDataTable.map((v) => ({
+                    ...v,
+                    coordinate: `<button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="${v.coordinate}">G Map Location</button>`,
+                }));
+            }
+            if (table === "users") {
+                dataDataTable = dataDataTable.map((v) => ({
+                    ...v,
+                    password: `<button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="${v.password}">Password</button>`,
+                    region: `<button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="${v.region}">G Map Location</button>`,
+                }));
+            }
+
+            // Generate table header HTML
+            for (const column of columnTable) {
+                columnsDataTable.push({ data: column });
+                tableColumnHtml += `<th>${column}</th>`;
+            }
+            columnsDataTable.push({ data: "action" }); // Action column
+            tableColumnHtml += "<th>Action</th>";
+
+            $("#result").html(tableColumnHtml); // Set table header
+
+
+            // Destroy existing DataTable instance if it exists
+            if (dataTableInstance) {
+                dataTableInstance.destroy();
+            }
+
+
+            const targetDateColumnIndex = columnTable.indexOf("datetime") !== -1 ? columnTable.indexOf("datetime") : columnTable.indexOf("date_time");
+
+
+            dataTableInstance = new DataTable("#datatable", {
+                dom: '<"dt-top-container"<l><"dt-center-in-div"B><f>r>t<"dt-filter-spacer"f><ip>',
+                buttons: ['copy', 'csv', 'excel'],
+                processing: true,
+                paging: true,
+                columns: columnsDataTable,
+                data: dataDataTable,
+                responsive: true,
+                columnDefs: targetDateColumnIndex !== -1 ? [{
+                    targets: targetDateColumnIndex,
+                    render: $.fn.dataTable.render.moment(FROM_PATTERN, TO_PATTERN)
+                }] : [],
+                order: [[targetDateColumnIndex !== -1 ? targetDateColumnIndex : 0, "desc"]],
+                createdRow: function (row, data, index) {
+                    // Row styling based on data values (example - adapt to your needs)
+                    if (data.etat === "off" || data.etat === false || data.style === "off" || data.style === false || data.type_action === "off" || data.type_action === "defb") {
+                        $(row).addClass("table-danger");
+                    } else if (data.etat === "on" || data.etat === true || data.style === "on" || data.style === true || data.type_action === "on" || data.type_action === "defa") {
+                        $(row).addClass("table-success");
+                    }
+                    if (table === "connection" && moment(data.datetime, FROM_PATTERN).isSame(dayjs().format(FROM_PATTERN), 'day')) {
+                        $(row).addClass("table-success");
+                    } else if (table === "connection") {
+                        $(row).addClass("table-danger");
+                    }
+                },
+            });
+            // Enable Bootstrap tooltips
+            $(function () {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            });
+
+
+        } catch (error) {
+            // Error handling is already done in getItems, handleApiError
+        }
+    };
+
+
+    // --- Event Listeners and Initial Setup ---
+    $(document).ready(function () {
+        openTable('steg'); // Open 'steg' table by default on page load
+
+        // Filter input event listener
+        $("#zone_id_filter").on('input', function() {
+            zoneIdFilterValue = $(this).val();
+            if (currentTable) {
+                openTable(currentTable); // Re-open/refresh the current table to apply filter
+            }
+        });
+    });
+
+
+</script>
+</html>
